@@ -28,21 +28,50 @@
 // export default App
 
 // Greeting.jsx
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getGreeting } from '../store/greeting/greetingSlice';
+import React, { useEffect, useState } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { getGreeting } from '../store/greeting/greetingSlice';
+import axios from 'axios';
 
 const Greeting = () => {
-  const dispatch = useDispatch();
-  const greetingMessage = useSelector((state) => state.greeting);
+  // const dispatch = useDispatch();
+  // const {
+  //   greeting, isLoading, isError, errorMsg,
+  // } = useSelector((state) => state.greeting);
+
+  // useEffect(() => {
+  //   dispatch(getGreeting());
+  // }, [dispatch]);
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (isError) {
+  //   return <div>{errorMsg}</div>;
+
+  const [greeting, setGreeting] = useState('');
+
+  // useEffect with async await and axios
 
   useEffect(() => {
-    dispatch(getGreeting());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/v1/greetings/random_greeting');
+        setGreeting(response.data.greeting);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  });
 
   return (
     <div>
-      <p>{greetingMessage}</p>
+      <p>
+        greeting:
+        { greeting }
+      </p>
     </div>
   );
 };

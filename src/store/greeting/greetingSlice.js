@@ -2,11 +2,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api/v1/greetings/random_greeting';
+const url = 'http://127.0.0.1:3000/api/v1/greetings/random_greeting'; // http://localhost:3000/api/v1/greetings/random_greeting
 
 export const getGreeting = createAsyncThunk('greeting/fetchGreeting', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(url);
+    const response = await axios(url);
     return response.data;
   } catch (error) {
     const errorMsg = `${error.code}: ${error.message}`;
