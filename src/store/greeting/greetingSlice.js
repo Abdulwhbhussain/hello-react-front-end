@@ -6,24 +6,23 @@ const url = 'http://127.0.0.1:3000/api/v1/greetings/random_greeting'; // http://
 
 export const getGreeting = createAsyncThunk('greeting/fetchGreeting', async (_, thunkAPI) => {
   try {
-    const response = await axios(url);
-    return response.data;
+    const response = await axios.get(url);
+    return response.data.greeting;
   } catch (error) {
-    const errorMsg = `${error.code}: ${error.message}`;
-    return thunkAPI.rejectWithValue(errorMsg);
+    return thunkAPI.rejectWithValue(error);
   }
 });
 
 const initialState = {
   greeting: '',
   isLoading: true,
-  isError: false,
-  errorMsg: '',
+  error: undefined,
 };
 
 const greetingSlice = createSlice({
   name: 'greeting',
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getGreeting.pending, (state) => {
@@ -34,9 +33,8 @@ const greetingSlice = createSlice({
         state.greeting = action.payload;
       })
       .addCase(getGreeting.rejected, (state, action) => {
-        state.isError = true;
         state.errorMsg = action.payload;
-        state.isLoading = false;
+        state.isLoading = action.payload.message;
       });
   },
 });
