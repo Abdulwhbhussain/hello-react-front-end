@@ -40,14 +40,9 @@ const Greeting = () => {
     dispatch(getGreeting());
   }, [dispatch]);
 
-  const handleButtonClick = () => {
-    dispatch(getGreeting());
-  };
-
   return (
     <div>
       <p>{greetingMessage}</p>
-      <button type="button" onClick={handleButtonClick}>Change Message</button>
     </div>
   );
 };
